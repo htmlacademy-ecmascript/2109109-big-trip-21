@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
-* Студент: [Nino Svanadze](https://up.htmlacademy.ru/ecmascript/21/user/2109109).
-* Наставник: `Неизвестно`.
+- Студент: [Nino Svanadze](https://up.htmlacademy.ru/ecmascript/21/user/2109109).
+- Наставник: `Роман Усков`. https://htmlacademy.ru/profile/id1019285
 
 ---
 
