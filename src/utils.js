@@ -1,9 +1,5 @@
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
+const getRandomInteger = (a, b) =>
+  Math.floor(Math.random() * (Math.abs(b - a) + 1) + Math.min(a, b));
 
 const formalizeTime = (num) => (num < 10 ? `0${num}` : `${num}`);
 
@@ -11,21 +7,15 @@ const getRandomArrayElement = (elements) =>
   elements[getRandomInteger(0, elements.length - 1)];
 
 const getRandomBoolean = () => Math.random() < 0.5;
-const getRandomKey = (obj) =>
-  Object.keys(obj)[getRandomInteger(0, Object.keys(obj).length - 1)];
 
-const sortByDate = (arrayOfObjects) => {
-  const newArray = arrayOfObjects.sort((a, b) => {
-    if (Date.parse(a.date) < Date.parse(b.date)) {
-      return -1;
-    }
-    if (Date.parse(a.date) > Date.parse(b.date)) {
-      return 1;
-    }
-    return 0;
-  });
-  return newArray;
+const getRandomKey = (obj) => {
+  const keys = Object.keys(obj);
+  return keys[getRandomInteger(0, keys.length - 1)];
 };
+
+const sortByDate = (arrayOfObjects) =>
+  arrayOfObjects.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+
 export {
   getRandomInteger,
   formalizeTime,

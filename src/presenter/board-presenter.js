@@ -24,31 +24,45 @@ class BoardPresenter {
 
   init() {
     this.events = [...this.eventsModel.getEvents()];
+
     if (this.events.length > 0) {
       this.events = sortByDate(this.events);
-      render(this.sortComponent, this.container);
-      render(this.listComponent, this.container);
-      render(this.editingItem, this.listComponent.getElement());
-      render(this.editingForm, this.editingItem.getElement());
-      render(new EventHeaderView(this.events[0]), this.editingForm.getElement());
-      render(this.editingDetails, this.editingForm.getElement());
-      render(
-        new EventOfferView(this.events[0]),
-        this.editingDetails.getElement(),
-      );
-      render(
-        new EventDestinationView(this.events[0]),
-        this.editingDetails.getElement(),
-      );
+
+      this.renderSortAndList();
+      this.renderEditingSection(this.events[0]);
 
       for (let i = 1; i < this.events.length; i++) {
-        const newItem = new ListItemView();
-        render(newItem, this.listComponent.getElement());
-        render(new EventLineView(this.events[i]), newItem.getElement());
+        this.renderEventLine(this.events[i]);
       }
     } else {
       render(new EmptyListView(), this.container);
     }
+  }
+
+  renderSortAndList() {
+    render(this.sortComponent, this.container);
+    render(this.listComponent, this.container);
+    render(this.editingItem, this.listComponent.getElement());
+    render(this.editingForm, this.editingItem.getElement());
+    render(new EventHeaderView(this.events[0]), this.editingForm.getElement());
+    render(this.editingDetails, this.editingForm.getElement());
+    render(new EventOfferView(this.events[0]), this.editingDetails.getElement());
+    render(
+      new EventDestinationView(this.events[0]),
+      this.editingDetails.getElement(),
+    );
+  }
+
+  renderEditingSection(event) {
+    render(new EventHeaderView(event), this.editingForm.getElement());
+    render(new EventOfferView(event), this.editingDetails.getElement());
+    render(new EventDestinationView(event), this.editingDetails.getElement());
+  }
+
+  renderEventLine(event) {
+    const newItem = new ListItemView();
+    render(newItem, this.listComponent.getElement());
+    render(new EventLineView(event), newItem.getElement());
   }
 }
 

@@ -19,50 +19,50 @@ import dayOfYear from 'dayjs/plugin/dayOfYear';
 dayjs.extend(dayjsRandom);
 dayjs.extend(dayOfYear);
 
-const getDateTime = () => {
+const generateRandomDate = () => {
   const eventDate = dayjs()
     .dayOfYear(getRandomInteger(1, 365))
     .format('YYYY-MM-DD');
-  const eventStartTime = `${eventDate}T${formalizeTime(
-    getRandomInteger(0, 23),
-  )}:${formalizeTime(Math.floor(getRandomInteger(0, 59) / 5) * 5)}`;
-  let endDate;
-  do {
-    endDate = dayjs().dayOfYear(getRandomInteger(1, 365)).format('YYYY-MM-DD');
-  } while (endDate < eventDate);
-  const eventEndTime = `${endDate}T${formalizeTime(
-    getRandomInteger(0, 23),
-  )}:${formalizeTime(Math.floor(getRandomInteger(0, 59) / 5) * 5)}`;
+  const eventTime = `${formalizeTime(getRandomInteger(0, 23))}:${formalizeTime(
+    Math.floor(getRandomInteger(0, 59) / 5) * 5,
+  )}`;
+  const endDate = dayjs()
+    .dayOfYear(getRandomInteger(dayjs(eventDate).dayOfYear(), 365))
+    .format('YYYY-MM-DD');
+  const endTime = `${formalizeTime(getRandomInteger(0, 23))}:${formalizeTime(
+    Math.floor(getRandomInteger(0, 59) / 5) * 5,
+  )}`;
   return {
     date: eventDate,
-    startTime: eventStartTime,
-    endTime: eventEndTime,
+    startTime: `${eventDate}T${eventTime}`,
+    endTime: `${endDate}T${endTime}`,
   };
 };
-function getRandomOffers() {
+
+const getRandomOffers = () => {
   const offersCount = getRandomInteger(0, Object.keys(ADDITIONAL_OFFERS).length);
   const offersList = [];
-  let newOffer;
-  for (let i = 0; i < offersCount; i++) {
-    do {
-      newOffer = getRandomKey(ADDITIONAL_OFFERS);
-    } while (offersList.includes(newOffer));
-    offersList.push(newOffer);
+  while (offersList.length < offersCount) {
+    const newOffer = getRandomKey(ADDITIONAL_OFFERS);
+    if (!offersList.includes(newOffer)) {
+      offersList.push(newOffer);
+    }
   }
   return offersList;
-}
-function getNewEntry() {
-  const newDate = getDateTime();
+};
+
+const getNewEntry = () => {
+  const { date, startTime, endTime } = generateRandomDate();
   return {
-    date: newDate.date,
+    date,
     eventType: getRandomArrayElement(TRAVEL_TYPES),
     destination: getRandomKey(DESTINATION_DESCRIPTIONS),
-    startTime: newDate.startTime,
-    endTime: newDate.endTime,
+    startTime,
+    endTime,
     price: getRandomInteger(MINIMUM_PRICE, MAXIMUM_PRICE),
     offers: getRandomOffers(),
     isFav: getRandomBoolean(),
   };
-}
+};
 
 export { getNewEntry };
