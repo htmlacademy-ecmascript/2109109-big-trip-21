@@ -9,7 +9,7 @@
     "start": "webpack serve --mode development --open"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
+    "@babel/core": "7.21.4",
     "@babel/preset-env": "7.21.4",
     "babel-loader": "9.1.2",
     "copy-webpack-plugin": "11.0.0",
@@ -25,5 +25,10 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "dependencies": {
+    "day-of-year": "0.1.0",
+    "dayjs": "1.11.7",
+    "dayjs-random": "^1.0.1"
+  }
 }

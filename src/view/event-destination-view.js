@@ -1,32 +1,53 @@
+import {
+  DESTINATION_DESCRIPTIONS,
+  PHOTO_BORDER_RANGES,
+  PHOTO_COUNT_RANGE,
+  PHOTO_SOURCE,
+} from '../const.js';
 import { createElement } from '../render.js';
+import { getRandomInteger } from '../utils.js';
 
-function createDestinationTemplate() {
+function createPhotos() {
+  const count = getRandomInteger(PHOTO_COUNT_RANGE.min, PHOTO_COUNT_RANGE.max);
+  let photos = '';
+  for (let i = 0; i < count; i++) {
+    photos += `<img class="event__photo" src="${PHOTO_SOURCE}${getRandomInteger(
+      PHOTO_BORDER_RANGES.min,
+      PHOTO_BORDER_RANGES.max,
+    )}" alt="Event photo">\n`;
+  }
+
+  return photos;
+}
+
+function createDestinationTemplate({ destination }) {
   return `<section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
-
+      <p class="event__destination-description">${
+  DESTINATION_DESCRIPTIONS[destination]
+}</p>
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-          <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+
+          ${createPhotos()}
         </div>
       </div>
     </section>`;
 }
 
 class EventDestinationView {
+  constructor(event) {
+    this.event = event;
+  }
+
   getTemplate() {
-    return createDestinationTemplate();
+    return createDestinationTemplate(this.event);
   }
 
   getElement() {
     if (!this.element) {
       this.element = createElement(this.getTemplate());
     }
-
     return this.element;
   }
 
@@ -34,5 +55,4 @@ class EventDestinationView {
     this.element.remove();
   }
 }
-
 export { EventDestinationView };
